@@ -1,0 +1,99 @@
+<%- include('../partials/header', { title: 'My Favourites - Airbnb' }) %>
+
+    <%- include('../partials/navbar', { currentPage: 'favourites' }) %>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-lg shadow-lg p-8 border-l-4 border-red-600 mb-8">
+            <h2 class="text-3xl font-bold text-red-600 mb-2">My Favourite Homes</h2>
+            <p class="text-gray-600">Your saved properties</p>
+        </div>
+
+        <div id="favouritesContainer"></div>
+    </main>
+
+    <script>
+        // All homes data
+        const allHomes = <%- JSON.stringify(typeof homes !== 'undefined' ? homes : []) %>;
+
+        function displayFavourites() {
+            const favourites = JSON.parse(localStorage.getItem('airbnb_favourites')) || [];
+            const container = document.getElementById('favouritesContainer');
+
+            const favouriteHomes = allHomes.filter(home => favourites.includes(home.id));
+
+            if (favouriteHomes.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-lg shadow-lg p-12 text-center">
+                        <div class="text-6xl mb-4">🤍</div>
+                        <p class="text-xl text-gray-600 mb-6">You haven't added any favourites yet</p>
+                        <a href="/store" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg inline-block transition">
+                            Browse Homes
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="space-y-8">';
+            favouriteHomes.forEach(home => {
+                html += `
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+                            <!-- Photo Section -->
+                            <div class="bg-gray-200 h-64 md:h-80 overflow-hidden flex items-center justify-center">
+                                ${home.photo ? `<img src="${home.photo}" alt="${home.housename}" class="w-full h-full object-cover">` : '<p class="text-lg text-gray-500">📷 No Photo</p>'}
+                            </div>
+
+                            <!-- Details Section -->
+                            <div class="p-6 md:p-8 flex flex-col justify-between relative">
+                                <button onclick="removeFavourite(${home.id})" class="absolute top-4 right-4 text-3xl hover:scale-110 transition" title="Remove from favourites">
+                                    ❤️
+                                </button>
+
+                                <div>
+                                    <h3 class="text-3xl font-bold text-gray-800 mb-2">${home.housename}</h3>
+                                    <p class="text-gray-600 mb-4">
+                                        <span class="font-semibold">📍 Location:</span> 
+                                        <span class="text-red-600">${home.location}</span>
+                                    </p>
+                                    
+                                    <div class="space-y-3 mb-6 border-t pt-4">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-600">Price per Night:</span>
+                                            <span class="text-2xl font-bold text-red-600">₹${home.price}</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-600">Rating:</span>
+                                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold">⭐ ${home.rating}/5</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-3">
+                                    <a href="/store/home/${home.id}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-200 text-center">
+                                        View Details
+                                    </a>
+                                    <a href="/store/booking/${home.id}" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition duration-200 text-center">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function removeFavourite(homeId) {
+            let favourites = JSON.parse(localStorage.getItem('airbnb_favourites')) || [];
+            favourites = favourites.filter(id => id !== homeId);
+            localStorage.setItem('airbnb_favourites', JSON.stringify(favourites));
+            displayFavourites();
+        }
+
+        document.addEventListener('DOMContentLoaded', displayFavourites);
+    </script>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,67 @@
+<%- include('../partials/header', { title: 'Booking Confirmed - Airbnb' }) %>
+
+    <%- include('../partials/navbar', { currentPage: 'home' }) %>
+
+    <main class="min-h-screen flex items-center justify-center px-4 bg-gray-50 py-12">
+        <div class="max-w-md w-full">
+            <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                <!-- Success Icon -->
+                <div class="mb-6">
+                    <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
+                        <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Booking Confirmed!</h1>
+                <p class="text-gray-600 mb-6">Thank you for booking with us.</p>
+
+                <!-- Confirmation Details -->
+                <div class="bg-gray-50 rounded-lg p-6 mb-6 text-left space-y-3">
+                    <div>
+                        <p class="text-sm text-gray-600">Property</p>
+                        <p class="font-semibold text-gray-800"><%= booking.housename %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Guest Name</p>
+                        <p class="font-semibold text-gray-800"><%= booking.fullname %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Email</p>
+                        <p class="font-semibold text-gray-800"><%= booking.email %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Check-in to Check-out</p>
+                        <p class="font-semibold text-gray-800"><%= booking.checkin %> to <%= booking.checkout %></p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Number of Guests</p>
+                        <p class="font-semibold text-gray-800"><%= booking.guests %></p>
+                    </div>
+                </div>
+
+                <!-- Contact Message -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                    <p class="text-blue-800 text-sm font-medium">
+                        ✓ We will shortly contact you at <strong><%= booking.email %></strong> or <strong><%= booking.phone %></strong> for further proceedings and confirmation.
+                    </p>
+                </div>
+
+                <!-- Buttons -->
+                <div class="space-y-3">
+                    <a href="/store" class="block w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition duration-200">
+                        Continue Browsing
+                    </a>
+                </div>
+
+                <!-- Help Text -->
+                <p class="text-xs text-gray-500 mt-6">
+                    Confirmation ID: <span class="font-mono"><%= booking.id %></span>
+                </p>
+            </div>
+        </div>
+    </main>
+
+<%- include('../partials/footer') %>

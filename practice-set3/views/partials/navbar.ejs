@@ -1,0 +1,15 @@
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="/" class="text-2xl font-bold text-red-600">Airbnb</a>
+                <div class="flex space-x-8 items-center">
+                    <a href="/store" class="px-3 py-2 rounded-md text-sm font-medium <%= currentPage === 'home' ? 'bg-red-600 text-white' : 'text-gray-700 hover:bg-red-100 hover:text-red-600' %> transition">
+                        Home
+                    </a>
+                    <a href="/store/favourites" class="px-3 py-2 rounded-md text-sm font-medium <%= currentPage === 'favourites' ? 'bg-red-600 text-white' : 'text-gray-700 hover:bg-red-100 hover:text-red-600' %> transition flex items-center gap-2">
+                        Favourites
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>

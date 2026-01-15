@@ -1,0 +1,61 @@
+<%- include('../partials/header', { title: home.housename + ' - Airbnb' }) %>
+
+    <%- include('../partials/navbar', { currentPage: 'home-detail' }) %>
+
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <a href="/store" class="text-red-600 hover:text-red-700 font-semibold mb-6 inline-block">← Back to Homes</a>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Photo Section -->
+            <div class="bg-gray-200 rounded-lg overflow-hidden">
+                <% if (home.photo) { %>
+                    <img src="<%= home.photo %>" alt="<%= home.housename %>" class="w-full h-96 object-cover">
+                <% } else { %>
+                    <div class="w-full h-96 flex items-center justify-center bg-gray-300">
+                        <p class="text-2xl text-gray-600">📷 No Photo Available</p>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- Details Section -->
+            <div class="bg-white rounded-lg shadow-lg p-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4"><%= home.housename %></h1>
+                
+                <div class="space-y-4 mb-8 border-b pb-8">
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg text-gray-600">📍 Location:</span>
+                        <span class="text-xl font-semibold text-red-600"><%= home.location %></span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg text-gray-600">💰 Price per Night:</span>
+                        <span class="text-3xl font-bold text-red-600">₹<%= home.price %></span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg text-gray-600">⭐ Rating:</span>
+                        <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-semibold text-lg"><%= home.rating %>/5</span>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">About this home</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        This is a beautiful home located in <%= home.location %>. Enjoy comfortable stay at an affordable price of ₹<%= home.price %> per night. 
+                        The property has been highly rated with a <%= home.rating %>/5 star rating by our guests.
+                    </p>
+                </div>
+
+                <div class="mt-8 space-y-3">
+                    <a href="/store/booking/<%= home.id %>" class="block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition text-center">
+                        Book Now
+                    </a>
+                    <a href="/store" class="block w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition text-center">
+                        Back to Listing
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+<%- include('../partials/footer') %>

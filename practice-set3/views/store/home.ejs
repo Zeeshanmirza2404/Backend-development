@@ -1,0 +1,112 @@
+<%- include('../partials/header', { title: 'Home - Airbnb' }) %>
+
+    <%- include('../partials/navbar', { currentPage: 'home' }) %>
+
+    <header class="bg-gradient-to-r from-red-600 to-red-500 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold mb-4">Welcome to Airbnb</h1>
+            <p class="text-xl mb-8">Find and book amazing homes around the world</p>
+            <a href="/host/homes" class="bg-white text-red-600 px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition">
+                Become a Host
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-12">
+        <div class="bg-white rounded-lg shadow-lg p-8 border-l-4 border-red-600 mb-8">
+            <h2 class="text-3xl font-bold text-red-600 mb-2">Featured Homes</h2>
+            <p class="text-gray-600">Discover our curated collection of premium properties</p>
+        </div>
+
+        <% if (homes && homes.length > 0) { %>
+            <div class="space-y-8">
+                <% homes.forEach(home => { %>
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-0">
+                            <!-- Photo Section -->
+                            <div class="bg-gray-200 h-64 md:h-80 overflow-hidden flex items-center justify-center">
+                                <% if (home.photo) { %>
+                                    <img src="<%= home.photo %>" alt="<%= home.housename %>" class="w-full h-full object-cover">
+                                <% } else { %>
+                                    <div class="text-center text-gray-500">
+                                        <p class="text-lg">📷 No Photo Available</p>
+                                    </div>
+                                <% } %>
+                            </div>
+
+                            <!-- Details Section -->
+                            <div class="p-6 md:p-8 flex flex-col justify-between relative">
+                                <!-- Favourite Button -->
+                                <button onclick="toggleFavourite(<%= home.id %>, this)" class="absolute top-4 right-4 text-3xl hover:scale-110 transition" title="Add to favourites" id="fav-<%= home.id %>">
+                                    🤍
+                                </button>
+
+                                <div>
+                                    <h3 class="text-3xl font-bold text-gray-800 mb-2"><%= home.housename %></h3>
+                                    <p class="text-gray-600 mb-4">
+                                        <span class="font-semibold">📍 Location:</span> 
+                                        <span class="text-red-600"><%= home.location %></span>
+                                    </p>
+                                    
+                                    <div class="space-y-3 mb-6 border-t pt-4">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-600">Price per Night:</span>
+                                            <span class="text-2xl font-bold text-red-600">₹<%= home.price %></span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-600">Rating:</span>
+                                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold">⭐ <%= home.rating %>/5</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-3">
+                                    <a href="/store/home/<%= home.id %>" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-200 text-center">
+                                        View Details
+                                    </a>
+                                    <a href="/store/booking/<%= home.id %>" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition duration-200 text-center">
+                                        Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="bg-white rounded-lg shadow-lg p-12 text-center">
+                <p class="text-xl text-gray-600 mb-6">No homes available yet</p>
+            </div>
+        <% } %>
+    </main>
+
+    <script>
+        // Load favourites from localStorage
+        function loadFavourites() {
+            const favourites = JSON.parse(localStorage.getItem('airbnb_favourites')) || [];
+            favourites.forEach(id => {
+                const btn = document.getElementById(`fav-${id}`);
+                if (btn) btn.textContent = '❤️';
+            });
+        }
+
+        // Toggle favourite
+        function toggleFavourite(homeId, button) {
+            let favourites = JSON.parse(localStorage.getItem('airbnb_favourites')) || [];
+            
+            if (favourites.includes(homeId)) {
+                favourites = favourites.filter(id => id !== homeId);
+                button.textContent = '🤍';
+            } else {
+                favourites.push(homeId);
+                button.textContent = '❤️';
+            }
+            
+            localStorage.setItem('airbnb_favourites', JSON.stringify(favourites));
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadFavourites);
+    </script>
+
+<%- include('../partials/footer') %>
